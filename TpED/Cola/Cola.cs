@@ -13,31 +13,55 @@ public class Cola
         Ultimo = null;
     }
 
-    public void Agregar(Nodo nuevoNodo)
+    public bool Agregar(Nodo nuevoNodo)
     {
-        if (nuevoNodo != null) 
+        if (nuevoNodo != null)
         {
-            
-            if (EstaVacia()) 
+            // Verificamos si el DNI ya está en la cola
+            if (ExisteDNI(nuevoNodo.DNI))
             {
-                Primero = nuevoNodo; 
-                Ultimo = nuevoNodo; 
+                return false; // El DNI ya está en la cola, no se agrega
             }
-            else 
+
+            if (EstaVacia())
             {
-                Ultimo.Siguiente = nuevoNodo; 
-                Ultimo = nuevoNodo; 
+                Primero = nuevoNodo;
+                Ultimo = nuevoNodo;
             }
+            else
+            {
+                Ultimo.Siguiente = nuevoNodo;
+                Ultimo = nuevoNodo;
+            }
+
+            return true; // El nodo se ha agregado correctamente
         }
-        else
-        {
-            return; //No se deberia agregar
-        }
+
+        return false; // El nodo no se debería agregar si es nulo
     }
 
 
 
-   
+    public bool ExisteDNI(int dni)
+    {
+        Nodo actual = Primero;
+
+        // Recorre la cola y verifica si el DNI existe
+        while (actual != null)
+        {
+            if (actual.DNI == dni)
+            {
+                return true; // El DNI ya existe en la cola
+            }
+            actual = actual.Siguiente; // Avanza al siguiente nodo
+        }
+
+        return false; // El DNI no está en la cola
+    }
+
+
+
+
     public bool EstaVacia()
     {
         return Primero == null;

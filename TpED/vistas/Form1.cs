@@ -275,6 +275,7 @@ namespace TpED
             else
             {
                 MessageBox.Show("No hay mas personas para atender."); // Mensaje si no hay más personas
+                txtPersonal.Clear();
             }
         }
 
@@ -309,6 +310,7 @@ namespace TpED
             else
             {
                 MessageBox.Show("No hay más personas para atender."); // Mensaje si no hay más personas
+                txtCaja.Clear();
             }
         }
     }

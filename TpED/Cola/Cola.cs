@@ -13,14 +13,15 @@ public class Cola
         Ultimo = null;
     }
 
+    
     public bool Agregar(Nodo nuevoNodo)
     {
         if (nuevoNodo != null)
         {
-            // Verificamos si el DNI ya está en la cola
+            
             if (ExisteDNI(nuevoNodo.DNI))
             {
-                return false; // El DNI ya está en la cola, no se agrega
+                return false; 
             }
 
             if (EstaVacia())
@@ -34,10 +35,10 @@ public class Cola
                 Ultimo = nuevoNodo;
             }
 
-            return true; // El nodo se ha agregado correctamente
+            return true; 
         }
 
-        return false; // El nodo no se debería agregar si es nulo
+        return false; 
     }
 
 
@@ -46,17 +47,17 @@ public class Cola
     {
         Nodo actual = Primero;
 
-        // Recorre la cola y verifica si el DNI existe
+        
         while (actual != null)
         {
             if (actual.DNI == dni)
             {
-                return true; // El DNI ya existe en la cola
+                return true; 
             }
-            actual = actual.Siguiente; // Avanza al siguiente nodo
+            actual = actual.Siguiente; 
         }
 
-        return false; // El DNI no está en la cola
+        return false; 
     }
 
 
@@ -90,22 +91,22 @@ public class Cola
     {
         if (EstaVacia())
         {
-            return null; // O lanza una excepción si prefieres
+            return null; 
         }
 
-        // Guarda el nodo que se va a eliminar
+        
         Nodo nodoEliminado = Primero;
 
-        // Mueve el puntero Primero al siguiente nodo
+        
         Primero = Primero.Siguiente;
 
-        // Si la cola queda vacía, también actualiza Ultimo
+        
         if (Primero == null)
         {
             Ultimo = null;
         }
 
-        // Devuelve el nodo eliminado
+       
         return nodoEliminado;
     }
 

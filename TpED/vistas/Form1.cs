@@ -21,29 +21,30 @@ namespace TpED
 
         }
 
+      // Metodo que agrega nodos a la cola  
         private void btnAgregar_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(txtDNI.Text))
             {
                 if (int.TryParse(txtDNI.Text, out int dni))
                 {
-                    // Creamos el nuevo nodo con el DNI ingresado
+                    
                     Nodo nuevoNodo = new Nodo(dni);
 
-                    // Intentamos agregar el nodo a la cola
+                    
                     bool agregado = cola.Agregar(nuevoNodo);
 
                     if (agregado)
                     {
-                        // Si el nodo se agregó correctamente, recargamos la grilla
+                        
                         CargarDataGridView();
 
-                        // Limpiamos el campo de texto
+                       
                         txtDNI.Clear();
                     }
                     else
                     {
-                        // Si el DNI ya estaba en la cola, mostramos un mensaje
+                       
                         MessageBox.Show("El DNI ya está en la cola.");
                     }
                 }
@@ -59,39 +60,41 @@ namespace TpED
         }
 
 
+        //Actualiza la primer grilla
         private void ActualizarGrilla()
         {
             CargarDataGridView();
         }
 
+        // Carga de la primer grilla
         private void CargarDataGridView()
         {
-            // Limpiamos las filas y columnas existentes del DataGridView
+            
             dataGridView1.Rows.Clear();
             dataGridView1.Columns.Clear();
 
-            // Agregamos las columnas "Orden" y "DNI"
+            
             dataGridView1.Columns.Add("Orden", "Orden");
             dataGridView1.Columns.Add("DNI", "DNI");
 
-            // Obtenemos los nodos de la cola
+            
             List<Nodo> listaDeNodos = cola.ListarElementos();
 
-            // Variable para llevar el conteo del orden
+            
             int orden = 1;
 
-            // Iteramos sobre cada nodo en la lista
+            
             foreach (var nodo in listaDeNodos)
             {
                 if (nodo != null)
                 {
-                    // Convertimos el DNI a cadena de texto
+                    
                     string dniString = nodo.DNI.ToString();
 
-                    // Agregamos una nueva fila con el orden y el DNI
+                    
                     dataGridView1.Rows.Add(orden, dniString);
 
-                    // Incrementamos el contador de orden
+                    
                     orden++;
                 }
                 else
@@ -108,21 +111,22 @@ namespace TpED
 
         }
 
+        // Metodo que va retirando de la cola los nodos segun orden primero en entrar primero en salir.
         private void btnSiguiente_Click(object sender, EventArgs e)
         {
-            // Llama al método Eliminar y guarda el nodo eliminado
+            
             Nodo nodoEliminado = cola.Eliminar();
 
-            // Verifica si se eliminó un nodo
+           
             if (nodoEliminado != null)
             {
-                // Establece el texto de txtIngreso con el DNI del nodo eliminado
-                txtIngreso.Text = nodoEliminado.DNI.ToString(); // Convertimos a string
+                
+                txtIngreso.Text = nodoEliminado.DNI.ToString(); 
                 ActualizarGrilla();
             }
             else
             {
-                // Opcional: Manejar el caso cuando no hay nodos para eliminar
+                
                 MessageBox.Show("No hay mas datos en la cola");
             }
         }
@@ -137,70 +141,71 @@ namespace TpED
 
         }
 
+        // Metodo que deriva a la lista que corresponda , Cajas o Atencion Personal
         private void btnAceptar_Click(object sender, EventArgs e)
         {
-            // Verificamos que haya un valor en el TextBox txtIngreso
+           
             if (string.IsNullOrWhiteSpace(txtIngreso.Text))
             {
-                MessageBox.Show("Debe haber un DNI."); // Mensaje de error si el TextBox está vacío
-                return; // Salimos del método
+                MessageBox.Show("Debe haber un DNI."); 
+                return; 
             }
 
-            // Obtenemos el número de DNI del TextBox
-            if (int.TryParse(txtIngreso.Text, out int dni)) // Validamos que el DNI sea un número
+            
+            if (int.TryParse(txtIngreso.Text, out int dni)) 
             {
-                // Creamos un nuevo nodo usando el DNI y el estado del CheckBox
+                
                 NodoLista nuevoNodo = new NodoLista(dni)
                 {
-                    Cliente = checkCliente.Checked // Asignamos true o false según el CheckBox
+                    Cliente = checkCliente.Checked 
                 };
 
-                // Verificamos si el RadioButton btnCaja está seleccionado
+                
                 if (btnCaja.Checked)
                 {
-                    // Insertamos el nodo en la lista de Caja
+                    
                     listaCaja.Insertar(nuevoNodo);
 
-                    // Cargamos los datos en el DataGridView de Caja
+                    
                     CargarGrillaCaja();
 
-                    // Limpiamos los controles
+                    
                     txtIngreso.Clear();
                     checkCliente.Checked = false;
-                    btnCaja.Checked = false; // Desmarcamos el RadioButton
+                    btnCaja.Checked = false;
                 }
-                // Verificamos si el RadioButton btnPersonal está seleccionado
+                
                 else if (btnPersonal.Checked)
                 {
-                    // Insertamos el nodo en la lista de Personal
+                    
                     listaPersonal.Insertar(nuevoNodo);
 
-                    // Cargamos los datos en el DataGridView de Personal
+                   
                     CargarGrillaPersonal();
 
-                    // Limpiamos los controles
+                    
                     txtIngreso.Clear();
                     checkCliente.Checked = false;
-                    btnPersonal.Checked = false; // Desmarcamos el RadioButton
+                    btnPersonal.Checked = false; 
                 }
                 else
                 {
-                    MessageBox.Show("Por favor, selecciona la opción de Caja o Personal."); // Mensaje si ningún RadioButton está seleccionado
+                    MessageBox.Show("Por favor, selecciona la opción de Caja o Personal."); 
                 }
             }
             else
             {
-                MessageBox.Show("Por favor, ingresa un DNI válido."); // Mensaje de error si el DNI no es válido
+                MessageBox.Show("Por favor, ingresa un DNI válido."); 
             }
         }
 
-        // Método para cargar la grilla de Caja
+        
         private void CargarGrillaCaja()
         {
-            // Limpiamos el DataGridView antes de listar los elementos
+            
             dataGridCaja.Rows.Clear();
 
-            // Configuramos las columnas del DataGridView si no están configuradas
+            
             if (dataGridCaja.Columns.Count == 0)
             {
                 dataGridCaja.Columns.Add("Orden", "Orden");
@@ -208,24 +213,22 @@ namespace TpED
                 dataGridCaja.Columns.Add("Cliente", "Cliente");
             }
 
-            // Listamos todos los nodos y los cargamos en el DataGridView
+            
             var nodos = listaCaja.Listar();
 
-            // Cargamos los datos en el DataGridView
-            int orden = 1; // Variable para llevar el orden de los nodos
+            int orden = 1; 
             foreach (var nodo in nodos)
             {
-                dataGridCaja.Rows.Add(orden++, nodo.DNI, nodo.Cliente ? "Sí" : "No"); // Agregamos fila con el orden, DNI y "Sí"/"No" para el cliente
+                dataGridCaja.Rows.Add(orden++, nodo.DNI, nodo.Cliente ? "Sí" : "No"); 
             }
         }
 
-        // Método para cargar la grilla de Personal
         private void CargarGrillaPersonal()
         {
-            // Limpiamos el DataGridView antes de listar los elementos
+           
             dataGridPersonal.Rows.Clear();
 
-            // Configuramos las columnas del DataGridView si no están configuradas
+            
             if (dataGridPersonal.Columns.Count == 0)
             {
                 dataGridPersonal.Columns.Add("Orden", "Orden");
@@ -233,83 +236,82 @@ namespace TpED
                 dataGridPersonal.Columns.Add("Cliente", "Cliente");
             }
 
-            // Listamos todos los nodos y los cargamos en el DataGridView
+            
             var nodos = listaPersonal.Listar();
 
-            // Cargamos los datos en el DataGridView
-            int orden = 1; // Variable para llevar el orden de los nodos
+            
+            int orden = 1; 
             foreach (var nodo in nodos)
             {
-                dataGridPersonal.Rows.Add(orden++, nodo.DNI, nodo.Cliente ? "Sí" : "No"); // Agregamos fila con el orden, DNI y "Sí"/"No" para el cliente
+                dataGridPersonal.Rows.Add(orden++, nodo.DNI, nodo.Cliente ? "Sí" : "No"); 
             }
         }
 
-        private bool primerInicioPersonal = true; // Variable para controlar si es el primer clic de personal
+        private bool primeroInicioPersonal = true; 
 
         private void atenderPersonal_Click(object sender, EventArgs e)
         {
             NodoLista nodoAtendido;
 
-            if (primerInicioPersonal)
+            if (primeroInicioPersonal)
             {
-                // En el primer clic, atendemos al primer nodo de la lista personal
+                
                 nodoAtendido = listaPersonal.Atender();
-                primerInicioPersonal = false; // Cambiamos el estado a no primer clic
+                primeroInicioPersonal = false; 
             }
             else
             {
-                // En clics subsecuentes, buscamos un nodo con Cliente
+                
                 nodoAtendido = listaPersonal.BuscarCliente(); 
-                primerInicioPersonal = true ;
+                primeroInicioPersonal = true ;
             }
 
-            // Verificamos si se obtuvo un nodo atendido
+        
             if (nodoAtendido != null)
             {
-                // Cargamos el DNI en el TextBox
-                txtPersonal.Text = nodoAtendido.DNI.ToString(); // Convertimos el DNI a string y lo asignamos al TextBox
+                
+                txtPersonal.Text = nodoAtendido.DNI.ToString(); 
 
-                // Refrescamos la grilla dataGridPersonal
-                CargarGrillaPersonal(); // Este método debería implementar la lógica para cargar los datos en el DataGridView
+              
+                CargarGrillaPersonal(); 
             }
             else
             {
-                MessageBox.Show("No hay mas personas para atender."); // Mensaje si no hay más personas
+                MessageBox.Show("No hay mas personas para atender.");
                 txtPersonal.Clear();
             }
         }
 
-        private bool primerInicioCaja = true; // Variable para controlar si es el primer clic de personal
+        private bool primeroInicioCaja = true; 
 
         private void atenderCaja_Click(object sender, EventArgs e)
         {
             NodoLista nodoAtendido;
 
-            if (primerInicioCaja)
+            if (primeroInicioCaja)
             {
-                // En el primer clic, atendemos al primer nodo de la lista caja
-                nodoAtendido = listaCaja.Atender(); // Suponiendo que Atender obtiene el primer nodo
-                primerInicioCaja = false; // Cambiamos el estado a no primer clic
+               
+                nodoAtendido = listaCaja.Atender(); 
+                primeroInicioCaja = false; 
             }
             else
             {
-                // En clics subsecuentes, buscamos en los primeros 3
-                nodoAtendido = listaCaja.BuscarCliente(); // Método que deberías tener en tu clase ListaCaja
-                primerInicioCaja = true; // Restablecemos el estado para el siguiente clic
+               
+                nodoAtendido = listaCaja.BuscarCliente(); 
+                primeroInicioCaja = true; 
             }
 
-            // Verificamos si se obtuvo un nodo atendido
+            
             if (nodoAtendido != null)
             {
-                // Cargamos el DNI en el TextBox
-                txtCaja.Text = nodoAtendido.DNI.ToString(); // Convertimos el DNI a string y lo asignamos al TextBox
-
-                // Refrescamos la grilla dataGridCaja
-                CargarGrillaCaja(); // Este método debería implementar la lógica para cargar los datos en el DataGridView
+               
+                txtCaja.Text = nodoAtendido.DNI.ToString();
+               
+                CargarGrillaCaja();
             }
             else
             {
-                MessageBox.Show("No hay más personas para atender."); // Mensaje si no hay más personas
+                MessageBox.Show("No hay más personas para atender."); 
                 txtCaja.Clear();
             }
         }

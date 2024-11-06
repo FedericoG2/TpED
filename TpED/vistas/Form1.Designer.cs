@@ -315,7 +315,7 @@
             this.dataGridViewTextBoxColumn3});
             this.dataGridPersonal.Location = new System.Drawing.Point(6, 42);
             this.dataGridPersonal.Name = "dataGridPersonal";
-            this.dataGridPersonal.Size = new System.Drawing.Size(301, 154);
+            this.dataGridPersonal.Size = new System.Drawing.Size(301, 149);
             this.dataGridPersonal.TabIndex = 5;
             this.dataGridPersonal.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView3_CellContentClick);
             // 
